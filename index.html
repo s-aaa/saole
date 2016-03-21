@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<script src="jquery1.12.1.min.js"></script>
+	<style>
+		body{
+			background: url(2.jpg) repeat-x;
+			background-position:  center;
+		}
+		button{
+			width:150px;
+			height:100px;
+			background: url(4.png) center;
+			outline: none;
+			border:none;
+			background-size:cover;
+			position: absolute;
+			top:50%;
+			left:10%;
+			font-weight:900;
+			color:#9BC6DB;
+			font-size: 25px;
+
+		}
+		.saolei{
+			width:600px;
+			height:600px;
+			margin:0 auto;
+			background: rgba(255,255,255,0.8);
+		}
+		
+		.block{
+			width:28px;
+			height:28px;
+			border:1px solid #fff;
+			float: left;
+		}
+		.red{
+			background: red;
+		}
+		
+		.color2{
+			background: #F5BDB3;
+		}
+		
+		.scale{
+			animation:fangdasuoxiao .6s ease;
+		}
+		@keyframes fangdasuoxiao{
+			0%,100%{
+				transform:scale(1,1);
+			}
+			80%{
+				transform:scale(1.2,1.2)
+			}
+		}
+		.word{
+			font-size: 25px;
+			color:#fff;
+			font-weight: 900;
+			text-align: center;
+		}
+	</style>
+</head>
+<body>
+	<div class="saolei"></div>
+	<button>再来一局</button>
+</body>
+<script>
+	$(function(){
+	var saolei =function(){
+		var row=20;
+		var el='';
+		var $div=$('.saolei div');
+		for (var i = 0; i <Math.pow(row+2,2); i++) {
+			el +='<div></div>';
+		}
+		$('.saolei').html(el)
+		.find('div')
+		.addClass('block')
+		$('.saolei div:lt(23)').removeClass();
+		$('.saolei div:gt(461)').removeClass();
+		$('.saolei div:nth-child(22n+1)').removeClass();
+		$('.saolei div:nth-child(22n)').removeClass();
+		 $('.saolei div').each(function(i){
+			$(this).data('index',i);
+		})
+		$('.saolei .block').each(function(i){
+			if(Math.random()>0.8){
+				$(this).data('islei',true)
+			}
+		}).click(function(){
+			if ($(this).data('islei')) {
+				alert('bong!!!')
+				$('.saolei').find('.block')
+				.removeClass()
+				.addClass('block')
+				.addClass(function(){
+					if ($(this).data('islei')) {
+						return 'red scale';
+					}
+				}).css('animation-delay',function(){
+					return Math.random()*0.8.toFixed(2)+'s';
+				})
+				
+			}else{
+				var shu=0;
+				var pos=$(this).data('index');
+				if($('.saolei div').eq(pos-1).data('islei')){shu++;};
+				if($('.saolei div').eq(pos+1).data('islei')){shu++;};
+				if($('.saolei div').eq(pos+22).data('islei')){shu++;};
+				if($('.saolei div').eq(pos+21).data('islei')){shu++;};
+				if($('.saolei div').eq(pos+23).data('islei')){shu++;};
+				if($('.saolei div').eq(pos-22).data('islei')){shu++;};
+				if($('.saolei div').eq(pos-21).data('islei')){shu++;};
+				if($('.saolei div').eq(pos-23).data('islei')){shu++;};
+				$(this).text(shu).addClass('word');
+			}
+		})
+		
+		for (var i = 0; i < 400; i++) {
+			$('.saolei .block').addClass('color2')
+
+		}
+	}
+	saolei();
+	$('button').click(function(){
+		$('.saolei').empty().html()
+			saolei();
+		})
+	})
+</script>
+</html>
